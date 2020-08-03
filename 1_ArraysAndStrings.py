@@ -79,6 +79,7 @@ def urlify(s: list, true_length: int) -> None:
             s[i + offset - 1] = '2'
             s[i + offset] = '0'
             offset = offset - 2
+# Time complexity: O(n), space complexity: O(1)
 
 
 if __name__ == "__main__":
