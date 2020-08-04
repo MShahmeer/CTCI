@@ -97,19 +97,24 @@ need to be limited to just dictionary words.
 
 def palindrome_permutations(s: str) -> bool:
     s = s.lower()
-    s.replace(" ", "")
-    letter_set = set(s)
+    s = s.replace(" ", "")
+    comp = {}
     has_even_no = False
+    odds = 0
     if len(s) % 2 == 0:
         has_even_no = True
-    for char in letter_set:
-        odds = 0
-        if s.count(char) % 2 != 0:
+    for char in s:
+        if char in comp:
+            comp[char] += 1
+        else:
+            comp[char] = 1
+        if comp[char] % 2 != 0:
             odds += 1
-            if has_even_no or (not has_even_no and odds > 1):
-                return False
-        if not has_even_no and odds == 0:
-            return False
+        else:
+            odds -= 1
+    if (not has_even_no and odds != 1) or (has_even_no and odds > 0):
+        return False
+    else:
         return True
 # Time complexity: O(n), space complexity: O(n)
 
