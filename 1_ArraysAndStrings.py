@@ -14,6 +14,10 @@ Problem 2:
 True
 >>> check_permutations("racecar", "not a racecar")
 False
+
+Problem 4:
+>>> palindrome_permutations("Tact Coa")
+True
 """
 
 
@@ -80,6 +84,34 @@ def urlify(s: list, true_length: int) -> None:
             s[i + offset] = '0'
             offset = offset - 2
 # Time complexity: O(n), space complexity: O(1)
+
+
+"""
+Problem 4 - Palindrome Permutation:
+Given a string, write a function to check if it is a permutation of a
+palindrome. A palindrome is a word or phrase that is the same forwards and
+backwards. A permutation is a rearrangement of letters.The palindrome does not
+need to be limited to just dictionary words.
+"""
+
+
+def palindrome_permutations(s: str) -> bool:
+    s = s.lower()
+    s.replace(" ", "")
+    letter_set = set(s)
+    has_even_no = False
+    if len(s) % 2 == 0:
+        has_even_no = True
+    for char in letter_set:
+        odds = 0
+        if s.count(char) % 2 != 0:
+            odds += 1
+            if has_even_no or (not has_even_no and odds > 1):
+                return False
+        if not has_even_no and odds == 0:
+            return False
+        return True
+# Time complexity: O(n), space complexity: O(n)
 
 
 if __name__ == "__main__":
