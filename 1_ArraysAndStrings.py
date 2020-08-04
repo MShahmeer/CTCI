@@ -18,13 +18,24 @@ False
 Problem 4:
 >>> palindrome_permutations("Tact Coa")
 True
-"""
 
+Problem 5:
+>>> one_away("pale", "ple")
+True
+>>> one_away("pales", "pale")
+True
+>>> one_away("pale", "bale")
+True
+>>> one_away("pale", "bake")
+False
+"""
 
 """
 Problem 1 - Is Unique:
 Implement an algorithm to determine if a string has all unique characters.
 What if you cannot use additional data structures?
+
+Time complexity: O(n), space complexity: O(1)
 """
 
 
@@ -36,12 +47,13 @@ def is_unique(s: str) -> bool:
         else:
             comp.add(char)
     return True
-# Time complexity: O(n), space complexity: O(1)
 
 
 """
 Problem 2 - Check Permutations:
 Given two strings, write a method to decide if one's a permutation of the other.
+
+Time complexity: O(n), space complexity: O(n)
 """
 
 
@@ -62,7 +74,6 @@ def check_permutations(s1: str, s2: str) -> bool:
         else:
             comp2[c2] = 0
     return comp1 == comp2
-# Time complexity: O(n), space complexity: O(n)
 
 
 """
@@ -70,6 +81,8 @@ Problem 3 - URLify:
 Write a method to replace all spaces in a string with '%20: You may assume that
 the string has sufficient space at the end to hold the additional characters,
 and that you are given the "true" length of the string.
+
+Time complexity: O(n), space complexity: O(1)
 """
 
 
@@ -83,7 +96,6 @@ def urlify(s: list, true_length: int) -> None:
             s[i + offset - 1] = '2'
             s[i + offset] = '0'
             offset = offset - 2
-# Time complexity: O(n), space complexity: O(1)
 
 
 """
@@ -92,6 +104,8 @@ Given a string, write a function to check if it is a permutation of a
 palindrome. A palindrome is a word or phrase that is the same forwards and
 backwards. A permutation is a rearrangement of letters.The palindrome does not
 need to be limited to just dictionary words.
+
+Time complexity: O(n), space complexity: O(n)
 """
 
 
@@ -116,9 +130,27 @@ def palindrome_permutations(s: str) -> bool:
         return False
     else:
         return True
-# Time complexity: O(n), space complexity: O(n)
+
+
+"""
+Problem 5 - One Away:
+There are three types of edits that can be performed on strings: insert a
+character, remove a character, or replace a character. Given two strings, write
+a function to check if they are one edit (or zero edits) away.
+
+Time complexity: O(n), space complexity: O(1)
+"""
+
+
+def one_away(s1: str, s2: str) -> bool:
+    if min(len(set(s2)), len(set(s1))) - 1 <= \
+            len(set(s1).intersection(set(s2))) <= \
+            min(len(set(s2)), len(set(s1))) + 1:
+        return True
+    return False
 
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
