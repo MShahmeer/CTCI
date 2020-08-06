@@ -61,25 +61,51 @@ class Queue:
         self._items.pop(item, 0)
 
 
+class _GraphNode:
+    item: Any
+    adjacent: [_GraphNode]
+
+    def __init__(self, item: Any) -> None:
+        self.item = item
+        self.adjacent = []
+
+    def add_edge_to(self, destination: _GraphNode):
+        self.adjacent.append(destination)
+
+    def remove_edge_to(self, destination: _GraphNode):
+        self.adjacent.remove(destination)
+
+
 class Graph:
-    _data: {Any: [Any]}
+    _data: [_GraphNode]
 
     def __init__(self) -> None:
-        self._data = {}
+        self._data = []
+
+    def find_node(self, item: Any) -> _GraphNode:
+        for node in self._data:
+            if node.item == item:
+                return node
 
     def add_vertex(self, item: Any) -> None:
-        self._data[item] = []
+        self._data.append(_GraphNode(item))
 
     def add_edge(self, one: Any, two: Any) -> None:
-        self._data[one].append(two)
-        self._data[two].append(one)
+        # Precondition: both one and two already exist as nodes in the graph
+        first = self.find_node(one)
+        second = self.find_node(two)
+        first.add_edge_to(second)
+        second.add_edge_to(first)
 
     def remove_vertex(self, item: Any) -> None:
-        self._data.pop(item)
-        for vertex in self._data:
-            if item in self._data[vertex]:
-                self._data[vertex].remove(item)
+        node_to_remove = self.find_node(item)
+        adjacent = node_to_remove.adjacent
+        for node in adjacent:
+            node.remove_edge_to(node_to_remove)
+        self._data.remove(node_to_remove)
 
     def remove_edge(self, one: Any, two: Any) -> None:
-        self._data[one].remove(two)
-        self._data[two].remove(one)
+        first = self.find_node(one)
+        second = self.find_node(two)
+        first.remove_edge_to(second)
+        second.remove_edge_to(first)
