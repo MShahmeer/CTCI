@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Optional, Any
 
 
@@ -44,8 +45,11 @@ class Stack:
     def push(self, item: Any) -> None:
         self._items.append(item)
 
-    def pop(self, item: Any) -> None:
-        self._items.pop(item)
+    def pop(self) -> Any:
+        return self._items.pop()
+
+    def is_empty(self) -> bool:
+        return len(self._items) == 0
 
 
 class Queue:
@@ -54,11 +58,14 @@ class Queue:
     def __init__(self) -> None:
         self._items = []
 
-    def push(self, item: Any) -> None:
+    def enqueue(self, item: Any) -> None:
         self._items.append(item)
 
-    def pop(self, item: Any) -> None:
-        self._items.pop(item, 0)
+    def dequeue(self) -> Any:
+        return self._items.pop(0)
+
+    def is_empty(self) -> bool:
+        return len(self._items) == 0
 
 
 class _GraphNode:
@@ -109,3 +116,31 @@ class Graph:
         second = self.find_node(two)
         first.remove_edge_to(second)
         second.remove_edge_to(first)
+
+    def dfs(self, start: _GraphNode, end: _GraphNode, visited=[]) -> bool:
+        # Returns true if there is a path between start and end using depth
+        # first search
+        if start not in visited:
+            if start == end:
+                return True
+            visited.append(start)
+            for neighbour in start.adjacent:
+                if self.dfs(neighbour, end, visited):
+                    return True
+        return False
+
+    def bfs(self, start: _GraphNode, end: _GraphNode) -> bool:
+        # Returns true if there is a path between start and end using breadth
+        # first search
+        visited = []
+        queue = Queue()
+        queue.enqueue(start)
+        while not queue.is_empty():
+            node = queue.dequeue()
+            if node == end:
+                return True
+            visited.append(node)
+            for neighbour in node.adjacent:
+                if neighbour not in visited:
+                    queue.enqueue(neighbour)
+        return False
